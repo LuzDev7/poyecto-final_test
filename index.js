@@ -1,20 +1,30 @@
 import express from "express";
 import "dotenv/config";
+import vistasRoutes from "./rutas/index.js";
 import { conectar } from "./src/config/database.js";
+
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
+// Configuración de EJS
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "src/config/vistas"));
 
-app.get("/", (req, res) => {
-    res.send("hola mundo");
-});
+// Middleware para archivos estáticos
+app.use(express.static(path.join(__dirname, "public")));
 
-conectar();
-console.log("Servidor iniciado...");
-
-app.listen(3000, () => {
-    console.log(`Example app listening on port 3000`);
-});
+// Rutas
+app.use("/", vistasRoutes);
 
 conectar();
-console.log("Servidor iniciado...");
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`✅ Servidor iniciado en el puerto ${PORT}`);
+});

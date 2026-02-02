@@ -1,16 +1,16 @@
-# 👕 Proyecto Final: Tienda Virtual de Ropa
+#  Proyecto Final: Tienda Virtual de Ropa
 
 ¡Bienvenidos a la documentación oficial de nuestra Tienda Virtual de Ropa! Este es un proyecto final diseñado para ofrecer una experiencia de compra fluida, moderna y eficiente.
 
 ---
 
-## 🚀 Descripción del Proyecto
+# Descripción del Proyecto
 
-Esta aplicación es una plataforma de comercio electrónico diseñada para la venta de prendas de vestir. Combina un diseño estético atractivo con una funcionalidad robusta, permitiendo a los usuarios navegar por colecciones, ver detalles de productos y gestionar sus compras.
+Esta aplicación es una plataforma de comercio electrónico diseñada para la venta de prendas de vestir de segunda mano. Combina un diseño estético atractivo con una funcionalidad robusta, permitiendo a los usuarios navegar por colecciones, ver detalles de productos y gestionar sus compras.
 
 ---
 
-## ✨ Características Principales
+##  Características Principales
 
 -   **Catálogo de Productos**: Visualización dinámica de prendas con filtros por categoría.
 -   **Carrito de Compras**: Gestión de pedidos en tiempo real.
@@ -20,7 +20,7 @@ Esta aplicación es una plataforma de comercio electrónico diseñada para la ve
 
 ---
 
-## 🛠️ Tecnologías Utilizadas
+## 🛠️Tecnologías Utilizadas
 
 El proyecto está construido con un stack moderno de desarrollo web:
 
@@ -33,7 +33,7 @@ El proyecto está construido con un stack moderno de desarrollo web:
 
 ---
 
-## 📥 Instalación y Configuración
+##  Instalación y Configuración
 
 Sigue estos pasos para obtener una copia local en funcionamiento:
 
@@ -62,7 +62,7 @@ Sigue estos pasos para obtener una copia local en funcionamiento:
 
 ---
 
-## 📂 Estructura del Proyecto
+##  Estructura del Proyecto
 
 ```text
 poyecto-final_test/
@@ -77,12 +77,8 @@ poyecto-final_test/
 
 ---
 
-## 🖋️ Autor
+## Autor
 
-- **Tu Nombre** - *Desarrollador Principal*
+- **Luz Karina Guerra Izquierdo* - *Desarrollador Principal*
 
 ---
-
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia ISC.

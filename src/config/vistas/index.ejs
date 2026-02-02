@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= typeof title !=='undefined' ? title : 'LuzShop' %>
+    </title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8e44ad;
+            --secondary: #9b59b6;
+            --accent: #e0aaff;
+            --bg: #0f0c29;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --text: #ffffff;
+            --text-dim: #b3b3b3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            background: rgba(15, 12, 41, 0.7);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 600;
+            background: linear-gradient(to right, #e0aaff, #9b59b6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 500px;
+            margin: 0 2rem;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(224, 170, 255, 0.3);
+        }
+
+        .btn-upload {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-upload:hover {
+            transform: scale(1.05);
+        }
+
+        main {
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+        }
+
+        .filters {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            height: fit-content;
+        }
+
+        .filters h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .filter-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .filter-group select {
+            width: 100%;
+            padding: 0.5rem;
+            background: #1a1a2e;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-category {
+            font-size: 0.8rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .tag {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            backdrop-filter: blur(5px);
+            z-index: 10;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: #1a1a2e;
+            padding: 2.5rem;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            border: 1px solid var(--accent);
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-dim);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: white;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: var(--accent);
+        }
+
+        @media (max-width: 768px) {
+            main {
+                grid-template-columns: 1fr;
+            }
+
+            .filters {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">LuzShop</div>
+        <div class="search-bar">
+            <input type="text" placeholder="Buscar tesoros de segunda mano...">
+        </div>
+        <button class="btn-upload" onclick="openModal()">+ Subir Ropa</button>
+    </header>
+
+    <main>
+        <aside class="filters">
+            <h3>Filtros</h3>
+            <div class="filter-group">
+                <label>Categoría</label>
+                <select>
+                    <option>Todas</option>
+                    <option>Abrigos</option>
+                    <option>Pantalones</option>
+                    <option>Camisas</option>
+                    <option>Calzado</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Precio Máximo</label>
+                <input type="range" min="0" max="200" step="10" style="width: 100%;">
+            </div>
+        </aside>
+
+        <section class="product-grid">
+            <% productos.forEach(producto=> { %>
+                <div class="product-card">
+                    <span class="tag">Second Hand</span>
+                    <img src="<%= producto.image_url || 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=500' %>"
+                        alt="<%= producto.nombre %>" class="product-image">
+                    <div class="product-info">
+                        <div class="product-category">
+                            <%= producto.categoria %>
+                        </div>
+                        <div class="product-name">
+                            <%= producto.nombre %>
+                        </div>
+                        <div class="product-price">$<%= Number(producto.precio).toFixed(2) %>
+                        </div>
+                    </div>
+                </div>
+                <% }) %>
+        </section>
+    </main>
+
+    <div class="modal" id="uploadModal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 1.5rem;">Subir nueva prenda</h2>
+            <form onsubmit="event.preventDefault(); closeModal(); alert('¡Ropa subida! (Simulación)');">
+                <div class="form-group">
+                    <label>Nombre de la prenda</label>
+                    <input type="text" required placeholder="Ej: Chaqueta de cuero 90s">
+                </div>
+                <div class="form-group">
+                    <label>Categoría</label>
+                    <select>
+                        <option>Abrigos</option>
+                        <option>Pantalones</option>
+                        <option>Camisas</option>
+                        <option>Calzado</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Precio ($)</label>
+                    <input type="number" step="0.01" required placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label>Imagen (URL de S3)</label>
+                    <input type="url" placeholder="https://tu-bucket-s3.amazonaws.com/...">
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="submit" class="btn-upload" style="flex: 1;">Guardar Prenda</button>
+                    <button type="button" onclick="closeModal()" class="btn-upload"
+                        style="flex: 1; background: #333;">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openModal() {
+            document.getElementById('uploadModal').style.display = 'flex';
+        }
+        function closeModal() {
+            document.getElementById('uploadModal').style.display = 'none';
+        }
+    </script>
+
+</body>
+
+</html>
