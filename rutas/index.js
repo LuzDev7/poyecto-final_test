@@ -3,12 +3,20 @@ import pool from "../src/config/database.js";
 
 const router = Router();
 
-router.get("/", async (req, res) => {
+// GET / - Landing Page con animación
+router.get("/", (req, res) => {
+    res.render("inicio", {
+        title: "LuzShop - Tu ropa merece una segunda historia"
+    });
+});
+
+// GET /tienda - Catálogo de productos (antes era /)
+router.get("/tienda", async (req, res) => {
     try {
         const result = await pool.query("SELECT * FROM productos");
         const productos = result.rows;
         res.render("index", {
-            title: "LuzShop - Tu tienda de ropa de segunda mano favorita",
+            title: "Catálogo - LuzShop",
             productos
         });
     } catch (error) {
@@ -32,8 +40,8 @@ router.get("/carrito", (req, res) => {
 router.post("/login", (req, res) => {
     const { email, password } = req.body;
     console.log(`Intentando login: ${email}`);
-    // Aquí iría la lógica de autenticación real más adelante
-    res.redirect("/");
+    // Futura validación de contraseña...
+    res.redirect("/tienda"); // Redirige a la tienda tras loguearse
 });
 
 export default router;

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/estilo.css">
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            /* Para que la animación cubra todo */
+            background: #0f0f13;
+        }
+
+        #fabricCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            z-index: 10;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            pointer-events: none;
+            /* Dejar pasar clicks al canvas si fuera necesario, pero el botón debe ser clickeable */
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(45deg, #fff, #a2a2a2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .btn-start {
+            pointer-events: auto;
+            display: inline-block;
+            padding: 15px 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .btn-start:hover {
+            background: white;
+            color: #0f0f13;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        footer {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            z-index: 10;
+            font-size: 0.9rem;
+        }
+
+        .heart {
+            color: #ff4757;
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="fabricCanvas"></canvas>
+
+    <div class="hero-overlay">
+        <h1 class="hero-title">LuzShop</h1>
+        <p class="hero-subtitle">Tu ropa merece una segunda historia.</p>
+        <a href="/login" class="btn-start">Iniciar Sesión</a>
+    </div>
+
+    <footer>
+        Creado con <span class="heart">❤</span> por Luz Guerra
+    </footer>
+
+    <script>
+        const canvas = document.getElementById('fabricCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let points = [];
+        const spacing = 40; // Espacio entre hilos
+        let rows, cols;
+        const mouse = { x: -1000, y: -1000 };
+
+        function init() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+
+            cols = Math.ceil(width / spacing) + 1;
+            rows = Math.ceil(height / spacing) + 1;
+            points = [];
+
+            for (let i = 0; i < cols; i++) {
+                points[i] = [];
+                for (let j = 0; j < rows; j++) {
+                    points[i][j] = {
+                        x: i * spacing,
+                        y: j * spacing,
+                        originX: i * spacing,
+                        originY: j * spacing,
+                        vx: 0,
+                        vy: 0
+                    };
+                }
+            }
+        }
+
+        function update() {
+            for (let i = 0; i < cols; i++) {
+                for (let j = 0; j < rows; j++) {
+                    let p = points[i][j];
+
+                    // Distancia al mouse
+                    let dx = p.x - mouse.x;
+                    let dy = p.y - mouse.y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    let force = Math.max(0, 100 - dist); // Radio de efecto del mouse
+
+                    // Fuerza de repulsión (simula abrir la tela)
+                    if (dist < 200) {
+                        let angle = Math.atan2(dy, dx);
+                        p.vx += Math.cos(angle) * force * 0.05;
+                        p.vy += Math.sin(angle) * force * 0.05;
+                    }
+
+                    // Fuerza de retorno (elasticidad)
+                    p.vx += (p.originX - p.x) * 0.1;
+                    p.vy += (p.originY - p.y) * 0.1;
+
+                    // Fricción
+                    p.vx *= 0.9;
+                    p.vy *= 0.9;
+
+                    p.x += p.vx;
+                    p.y += p.vy;
+                }
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, width, height);
+
+            // Dibujar hilos horizontales
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            for (let i = 0; i < cols; i++) {
+                for (let j = 0; j < rows - 1; j++) {
+                    if (i < cols - 1) {
+                        ctx.moveTo(points[i][j].x, points[i][j].y);
+                        ctx.lineTo(points[i + 1][j].x, points[i + 1][j].y);
+                    }
+                    if (j < rows - 1) {
+                        ctx.moveTo(points[i][j].x, points[i][j].y);
+                        ctx.lineTo(points[i][j + 1].x, points[i][j + 1].y);
+                    }
+                }
+            }
+            ctx.stroke();
+
+            // Dibujar puntos de algodón (nodos)
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+            for (let i = 0; i < cols; i++) {
+                for (let j = 0; j < rows; j++) {
+                    let p = points[i][j];
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+        }
+
+        function animate() {
+            update();
+            draw();
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', init);
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        init();
+        animate();
+    </script>
+</body>
+
+</html>
