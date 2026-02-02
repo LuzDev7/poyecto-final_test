@@ -101,13 +101,103 @@
     <div class="hero-overlay">
         <h1 class="hero-title">LuzShop</h1>
         <p class="hero-subtitle">Tu ropa merece una segunda historia.</p>
-        <a href="/login" class="btn-start">Iniciar Sesión</a>
+
+        <!-- Botón Principal -->
+        <button id="btnStart" class="btn-start" onclick="showLoginOptions()">
+            Iniciar Sesión
+        </button>
+
+        <!-- Opciones de Login (Ocultas al inicio) -->
+        <div id="loginOptions" class="login-options" style="display: none; opacity: 0;">
+            <a href="/login?method=email" class="btn-option email">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+                Email
+            </a>
+            <button class="btn-option google">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                        d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .533 5.333.533 12S5.867 24 12.48 24c3.44 0 6.04-1.133 7.373-2.96 1.52-2.08 1.813-5.147 1.813-7.52 0-.613-.053-1.04-.133-1.6H12.48z" />
+                </svg>
+                Google
+            </button>
+        </div>
     </div>
+
+    <!-- Sonido de Máquina de Coser -->
+    <audio id="sewingSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_73da3c469f.mp3" preload="auto"></audio>
 
     <footer>
         Creado con <span class="heart">❤</span> por Luz Guerra
     </footer>
 
+    <style>
+        /* Estilos para las nuevas opciones */
+        .login-options {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+            transition: opacity 0.5s ease;
+        }
+
+        .btn-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 25px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-option:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-option.email {
+            background: #fff;
+            color: #333;
+        }
+
+        .btn-option.google {
+            background: #4285F4;
+            color: white;
+        }
+    </style>
+
+    <script>
+        function showLoginOptions() {
+            const btn = document.getElementById('btnStart');
+            const options = document.getElementById('loginOptions');
+            const sound = document.getElementById('sewingSound');
+
+            // 1. Reproducir sonido
+            sound.volume = 0.5;
+            sound.currentTime = 0; // Reiniciar si se clickea rápido
+            sound.play().catch(e => console.log("Audio play failed:", e));
+
+            // 2. Ocultar botón principal
+            btn.style.display = 'none';
+
+            // 3. Mostrar opciones con animación
+            options.style.display = 'flex';
+
+            // Pequeño delay para permitir que el display:flex se aplique antes de la opacidad
+            setTimeout(() => {
+                options.style.opacity = '1';
+            }, 50);
+        }
+    </script>
     <script>
         const canvas = document.getElementById('fabricCanvas');
         const ctx = canvas.getContext('2d');
