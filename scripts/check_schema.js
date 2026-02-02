@@ -2,11 +2,11 @@ import pg from "pg";
 import "dotenv/config";
 
 const pool = new pg.Pool({
-    user: process.env.dbUser,
-    host: process.env.dbHost,
-    database: process.env.dbName,
-    password: process.env.dbPassword,
-    port: process.env.dbPort,
+    user: process.env.DB_USER || process.env.dbUser,
+    host: process.env.DB_HOST || process.env.dbHost,
+    database: process.env.DB_NAME || process.env.dbName,
+    password: process.env.DB_PASSWORD || process.env.dbPassword,
+    port: process.env.DB_PORT || process.env.dbPort,
     ssl: {
         rejectUnauthorized: false,
     }

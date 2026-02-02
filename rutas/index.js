@@ -29,4 +29,11 @@ router.get("/carrito", (req, res) => {
     res.render("carrito", { title: "Mi Carrito - LuzShop" });
 });
 
+router.post("/login", (req, res) => {
+    const { email, password } = req.body;
+    console.log(`Intentando login: ${email}`);
+    // Aquí iría la lógica de autenticación real más adelante
+    res.redirect("/");
+});
+
 export default router;
