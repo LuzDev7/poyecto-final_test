@@ -13,10 +13,11 @@ const app = express();
 
 // Configuración de EJS
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "src/config/vistas"));
+app.set("views", path.join(__dirname, "vistas"));
 
 // Middleware para archivos estáticos
 app.use(express.static(path.join(__dirname, "public")));
+app.use("/css", express.static(path.join(__dirname, "css")));
 
 // Rutas
 app.use("/", vistasRoutes);
