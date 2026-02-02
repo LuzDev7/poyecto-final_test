@@ -1,6 +1,7 @@
 import express from "express";
 import "dotenv/config";
 import vistasRoutes from "./rutas/index.js";
+import apiRoutes from "./rutas/api.js";
 import { conectar } from "./src/config/database.js";
 
 import path from "path";
@@ -22,6 +23,7 @@ app.use("/css", express.static(path.join(__dirname, "css")));
 
 // Rutas
 app.use("/", vistasRoutes);
+app.use("/api", apiRoutes);
 
 conectar();
 
